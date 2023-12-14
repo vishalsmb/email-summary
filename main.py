@@ -36,7 +36,7 @@ mail_data = [
 def fetch_messages():
     global mail_data
     mail_data = fetch_local_messages()
-    # scheduler.start()
+    scheduler.start()
 
 
 @scheduler.scheduled_job("cron", hour="10", minute="20")

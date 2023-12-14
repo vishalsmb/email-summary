@@ -37,7 +37,7 @@ def get_gmail_service():
     return service
 
 
-gmail_service = None
+gmail_service = get_gmail_service()
 
 
 def get_email_text(message):
