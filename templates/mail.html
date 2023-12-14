@@ -1,46 +1,79 @@
 <!-- templates/mail.html -->
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Include Tailwind CSS via CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind-dark.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
     <title>{{ mail.subject }}</title>
 </head>
-<body class="bg-gray-100 font-sans">
+<body class="bg-gray-100 font-sans dark:bg-gray-800 dark:text-white">
 
-<div class="container mx-auto p-8">
-    <h1 class="text-4xl font-bold mb-8">{{ mail.subject }}</h1>
-
-    <div class="bg-white rounded p-6 shadow-md mb-8">
-        <div class="text-lg font-semibold mb-4">From: {{ mail.from }}</div>
-        <p class="text-gray-800"  style="white-space: pre-line;" >{{ mail.full_msg }}</p>
+<div class="container mx-auto p-8 dark:bg-gray-800 dark:text-white">
+    <div class="flex items-center justify-between mb-8">
+        <h1 class="text-4xl font-bold">{{ mail.subject }}</h1>
+        <div class="flex items-center space-x-4">
+            <label for="toggle" class="text-gray-600">Night Mode</label>
+            <input type="checkbox" id="toggle" class="form-checkbox h-6 w-6 text-indigo-500 transition duration-150 ease-in-out">
+        </div>
     </div>
 
-    <div class="bg-gray-200 rounded p-4 mb-8">
-        <div class="text-sm font-semibold mb-2">Categories:</div>
+    <div class="bg-white rounded p-6 shadow-md mb-8 dark:bg-gray-700">
+        <div class="text-lg font-semibold mb-4">From: {{ mail.from }}</div>
+        <p class="text-gray-800 dark:text-gray-200" style="white-space: pre-line;">{{ mail.full_msg }}</p>
+    </div>
+
+    <div class="bg-gray-200 rounded p-4 mb-8 dark:bg-gray-700">
+        <div class="text-sm font-semibold mb-2 dark:text-white">Categories:</div>
         <div class="flex flex-wrap gap-2">
             {% for category in mail.categories %}
-                <div class="border border-blue-500 text-blue-800 px-2 py-1 rounded">
-                  {{ category}}
+                <div class="border border-blue-500 text-blue-800 px-2 py-1 rounded  dark:text-white">
+                    {{ category }}
                 </div>
             {% endfor %}
         </div>
     </div>
 
-    <div class="bg-gray-200 rounded p-4 mb-8">
-        <div class="text-sm font-semibold mb-2">Labels:</div>
+    <div class="bg-gray-200 rounded p-4 mb-8 dark:bg-gray-700">
+        <div class="text-sm font-semibold mb-2 dark:text-white">Labels:</div>
         <div class="flex flex-wrap gap-2">
             {% for label in mail.labels %}
-                <div class="border border-green-500 text-green-800 px-2 py-1 rounded">{{ label }}</div>
+                <div class="border border-green-500 text-green-800 px-2 py-1 rounded dark:text-white">
+                    {{ label }}
+                </div>
             {% endfor %}
         </div>
     </div>
 
     <a href="/" class="text-blue-500 hover:underline">&larr; Back to Mail List</a>
 </div>
+
+<script>
+    const toggle = document.getElementById('toggle');
+    const html = document.documentElement;
+
+    // Set the initial state based on the user's preference (localStorage or prefers-color-scheme)
+    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const storedDarkMode = localStorage.getItem('darkMode');
+
+    if (storedDarkMode === 'dark' || (!storedDarkMode && prefersDarkMode)) {
+        html.classList.add('dark');
+        toggle.checked = true;
+    }
+
+    toggle.addEventListener('change', () => {
+        if (toggle.checked) {
+            html.classList.add('dark');
+            localStorage.setItem('darkMode', 'dark');
+        } else {
+            html.classList.remove('dark');
+            localStorage.setItem('darkMode', 'light');
+        }
+    });
+</script>
 
 </body>
 </html>
