@@ -26,10 +26,7 @@ def insert_record_to_mail_detail(record):
         logging.error(f"Error inserting record: {e}")
 
 
-# insert_record_to_mail_detail("MailSummary", "MailDetails", sample_record)
-
-
-def find_ids_only(database_name, collection_name):
+def find_ids_only():
     try:
         database, collection = get_db_n_collection()
         # Query the collection and project only the "id" field
@@ -38,9 +35,6 @@ def find_ids_only(database_name, collection_name):
     except Exception as e:
         logging.error(f"Error querying ids: {e}")
         return None
-
-
-# find_ids_only("MailSummary", "MailDetails")
 
 
 def check_id_exists(record_id):
