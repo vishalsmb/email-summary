@@ -9,6 +9,5 @@
 7. Run main.py
 8. Visit app at http://localhost:8000
 
-![summary screenshot.png](..%2F..%2FDownloads%2Fsummary%20screenshot.png)
-
-![summary screenshot 1.png](..%2F..%2FDownloads%2Fsummary%20screenshot%201.png)
+![summary screenshot.png](assets%2Fsummary%20screenshot.png)
+![summary screenshot 1.png](assets%2Fsummary%20screenshot%201.png)
