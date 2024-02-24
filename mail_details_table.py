@@ -17,6 +17,7 @@ def insert_record_to_mail_detail(record):
     try:
         not_req_keys = ['full_msg']
         request = {key: value for key, value in record.items() if key not in not_req_keys}
+        request["timestamp"] = datetime.strptime(request["timestamp"], '%Y-%m-%d %H:%M:%S')
         database, collection = get_db_n_collection()
         # Insert the record into the collection
         result = collection.insert_one(request)
@@ -56,8 +57,9 @@ def check_id_exists(record_id):
 def select_all_records_since_yesterday():
     try:
         database, collection = get_db_n_collection()
+        yesterday = datetime.utcnow() - timedelta(days=1)
         result = collection.find({
-            "timestamp": {"$gte": datetime.now() - timedelta(days=1)}
+            "timestamp": {"$gte": yesterday}
         })
 
         return [r for r in result]

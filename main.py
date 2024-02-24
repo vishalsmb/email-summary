@@ -1,3 +1,4 @@
+import config
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -34,11 +35,12 @@ mail_data = [
 @app.on_event("startup")
 def fetch_messages():
     global mail_data
+    fetch_gmail_messages()
     mail_data = fetch_local_messages()
     scheduler.start()
 
 
-@scheduler.scheduled_job("cron", hour="10", minute="20")
+@scheduler.scheduled_job("cron", hour="12", minute="32")
 async def fetch_emails():
     global mail_data
     fetch_gmail_messages()
@@ -78,7 +80,7 @@ async def read_mail(mail_id: str, request: Request):
 PAGE_SIZE = 10
 
 
-@app.get("/get_list", response_class=HTMLResponse)
+@app.get("/historical", response_class=HTMLResponse)
 async def read_items(
         request: Request,
         page: int = Query(1, ge=1),

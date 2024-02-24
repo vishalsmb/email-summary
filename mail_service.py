@@ -11,7 +11,8 @@ import time
 import mail_details_table as mdt
 import summary_service as sum_ser
 import logging
-
+from tqdm import tqdm
+from config import label_ids_to_include
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s %(message)s")
@@ -102,9 +103,6 @@ def fetch_gmail_messages():
         global gmail_service
         gmail_service = get_gmail_service()
 
-        # Define the label IDs you want to include
-        label_ids_to_include = ["newsletters-ml-ds", "newsletters-ml-ds-alphasignal", "newsletters-productivity", "career-it-technology-linkedin-newsletters"]
-
         # Build the query to fetch emails from the specified labeled folders
         query = f"after:{(datetime.now() - timedelta(days=1)).strftime('%Y/%m/%d')} label:({' OR '.join(label_ids_to_include)})"
 
@@ -116,7 +114,7 @@ def fetch_gmail_messages():
         messages = results.get("messages", [])
 
         # Process each message and update mail_data
-        for message in messages:
+        for message in tqdm(messages):
             if not mdt.check_id_exists(message['id']):
                 message_details = get_message_details(message['id'])
                 new_message = format_message(message['id'], message_details)
@@ -125,7 +123,7 @@ def fetch_gmail_messages():
                 new_message["summary"] = get_summary(new_message)
                 mdt.insert_record_to_mail_detail(new_message)
 
-                time.sleep(10)
+                time.sleep(3)
 
     except HttpError as e:
         raise HTTPException(status_code=e.resp.status, detail=e._get_reason())
